@@ -1,0 +1,75 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "parent": "index.json",
+  "context": {
+    "market": "united-states"
+  },
+  "sections": {
+    "scrolling_text_Rwjd6": {
+      "type": "scrolling-text",
+      "disabled": true,
+      "settings": {
+        "header-32a37d312a544ae5df986069ca56d8df": null,
+        "speed": 30,
+        "direction": "rtl",
+        "pause_when_hover": false,
+        "adding_border": false,
+        "cl": "#ff0000",
+        "header-8d413ca17bb1f038a2889d99815a0035": null,
+        "cl_bg": "#f5f5f5",
+        "cl_bg_gradient": "",
+        "image_bg": null,
+        "mg": "",
+        "pd": "10px,0px,10px,0px",
+        "header-af9331aa303ec0cf72620819d1a24704": null,
+        "mg_tb": "",
+        "pd_tb": "10px,0px,10px,0px",
+        "header-c75214dc1f23f34a3f4f91a886d4e1c5": null,
+        "mg_mb": "",
+        "pd_mb": "10px,0px,10px,0px"
+      },
+      "blocks": {
+        "item_Dgq9q": {
+          "type": "item",
+          "disabled": false,
+          "settings": {
+            "content": "<p><strong>FREE GIFT WITH EVERY PURCHASE</strong></p>"
+          }
+        },
+        "item_UNJwN": {
+          "type": "item",
+          "disabled": false,
+          "settings": {
+            "content": "<p><strong>USA CUSTOMERS ONLY</strong></p>"
+          }
+        }
+      },
+      "block_order": [
+        "item_Dgq9q",
+        "item_UNJwN"
+      ],
+      "name": "Scrolling text"
+    }
+  },
+  "order": [
+    "1646028739ae283905",
+    "scrolling_text_Rwjd6",
+    "image_text_marquee_CcbFCE",
+    "dad69312-d3cd-4504-8a2f-e2819c6ad086",
+    "custom_section_6kMwkJ",
+    "collections_list_hVRcK8",
+    "featured_collection_with_image_683DaR",
+    "tabs_collection_ATkQjx",
+    "featured_collection_with_image_bwexV8",
+    "17882161210258215e",
+    "custom_section_V7pHnK"
+  ]
+}

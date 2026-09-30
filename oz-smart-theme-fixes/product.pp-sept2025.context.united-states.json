@@ -1,0 +1,111 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "parent": "product.pp-sept2025.json",
+  "context": {
+    "market": "united-states"
+  },
+  "sections": {
+    "scrolling_text_cKmTF": {
+      "type": "scrolling-text",
+      "disabled": true,
+      "settings": {
+        "header-5483072748b98a141ff37ab97ef68cb7": null,
+        "speed": 30,
+        "direction": "rtl",
+        "pause_when_hover": false,
+        "adding_border": false,
+        "cl": "#ff0000",
+        "header-083a39beb09909a67fc763437f23f6c8": null,
+        "cl_bg": "#ffffff",
+        "cl_bg_gradient": "",
+        "image_bg": null,
+        "mg": "",
+        "pd": "10px,0px,10px,0px",
+        "header-19ea7e2339ca8b89314b782aeee3f7c1": null,
+        "mg_tb": "",
+        "pd_tb": "10px,0px,10px,0px",
+        "header-783cd7b3cb23a1cb16c04d1a13b52cdb": null,
+        "mg_mb": "",
+        "pd_mb": "10px,0px,10px,0px"
+      },
+      "blocks": {
+        "item_dq3NV": {
+          "type": "item",
+          "disabled": false,
+          "settings": {
+            "content": "<p><strong>USA CUSTOMERS ONLY</strong></p>"
+          }
+        },
+        "item_gDLmR": {
+          "type": "item",
+          "disabled": false,
+          "settings": {
+            "content": "<p><strong>FREE GIFT WITH EVERY PURCHASE</strong></p>"
+          }
+        }
+      },
+      "block_order": [
+        "item_dq3NV",
+        "item_gDLmR"
+      ],
+      "name": "Scrolling text"
+    },
+    "main": {
+      "settings": {},
+      "blocks": {
+        "aov_ai_free_gift_bxgy_avada_promotion_card_QE4hB": {
+          "type": "shopify://apps/aov-ai-free-gift-bxgy/blocks/avada-promotion-card/de98edfe-90fa-4145-8a57-1055e0058723",
+          "disabled": false,
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "lai_product_reviews_star_rating_product_jdi9HX",
+        "title",
+        "price_review",
+        "form",
+        "aov_ai_free_gift_bxgy_avada_promotion_card_QE4hB",
+        "order_wFWCUi",
+        "size_delivery_ask_akcxiQ",
+        "cc3e1c98-2923-4fc0-8c32-9fdcf4ab4975",
+        "custom_liquid_bHy7KD",
+        "tolstoy_ads_image_video_tolstoy_builder_eckL9K",
+        "custom_liquid_iJaMFF",
+        "eb_easy_bundle_builder_app_block_bundle_upsell_yDV7xT",
+        "eb_easy_bundle_builder_app_block_mix_and_match_bundle_eWz6Ry",
+        "description_jjbV4c",
+        "benefits_XEJCfW",
+        "95d4f334-8ea7-4cd2-b609-2373b1e848b8",
+        "tab_html_fVgrjQ",
+        "754ad4a0-7308-4a3e-b325-e2f2c0b85d4c",
+        "0294c8f7-8d88-4f35-9847-72162efeed8e",
+        "tab_html_maTK7T"
+      ]
+    }
+  },
+  "order": [
+    "scrolling_text_cKmTF",
+    "breadcrumb",
+    "main",
+    "product_banner_EcAFtG",
+    "slideshow_LRqWDM",
+    "feature_columns_4dApzH",
+    "custom_section_mcw4Tr",
+    "1787627411d89a467f",
+    "sidebar",
+    "product-recommendations",
+    "collections_list_c3mng9",
+    "slideshow_M8W4qg",
+    "hero_image_7hPPfr",
+    "image_text_marquee_GwkBhr",
+    "recently-viewed-products"
+  ]
+}
