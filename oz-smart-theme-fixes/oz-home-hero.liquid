@@ -1,0 +1,377 @@
+{%- liquid
+  assign s = section.settings
+  assign sid = section.id
+  assign img = s.image
+  assign img_mb = s.image_mobile | default: img
+  assign focal = img.presentation.focal_point | default: s.focal_desktop
+  assign focal_mb = img_mb.presentation.focal_point | default: s.focal_mobile
+  assign ratio = img.aspect_ratio | default: 3
+  assign ratio_mb = img_mb.aspect_ratio | default: 0.68
+  assign h_vw = s.heading_size | times: 100.0 | divided_by: s.design_width
+  assign p_vw = s.text_size | times: 100.0 | divided_by: s.design_width
+  assign i_vw = s.icon_size | times: 100.0 | divided_by: s.design_width
+  assign l_vw = s.label_size | times: 100.0 | divided_by: s.design_width
+  assign b_vw = s.button_size | times: 100.0 | divided_by: s.design_width
+  assign img_alt = img.alt | default: s.heading_line_1 | escape
+-%}
+
+{%- capture hh_content -%}
+  <div class="oz-hh__content">
+    {%- if s.heading_line_1 != blank or s.heading_line_2 != blank or s.heading_highlight != blank -%}
+      <h2 class="oz-hh__heading">
+        {%- if s.heading_line_1 != blank %}<span>{{ s.heading_line_1 | escape }}</span>{% endif -%}
+        {%- if s.heading_line_2 != blank or s.heading_highlight != blank -%}
+          <span>{{ s.heading_line_2 | escape }} <em class="oz-hh__highlight" style="font-style: inherit;">{{ s.heading_highlight | escape }}</em></span>
+        {%- endif -%}
+      </h2>
+    {%- endif -%}
+    {%- if s.text != blank %}<p class="oz-hh__text">{{ s.text | escape }}</p>{% endif -%}
+    {%- if s.button_label != blank -%}
+      <a class="oz-hh__btn" href="{{ s.button_link | default: routes.all_products_collection_url }}">{{ s.button_label | escape }}</a>
+    {%- endif -%}
+    {%- if section.blocks.size > 0 -%}
+      <ul class="oz-hh__icons">
+        {%- for block in section.blocks -%}
+          {%- assign bs = block.settings -%}
+          <li class="oz-hh__icon" {{ block.shopify_attributes }}>
+            <span class="oz-hh__icon-img">
+              {%- if bs.icon != blank -%}
+                {{ bs.icon | image_url: width: 200 | image_tag: loading: 'lazy', alt: '' }}
+              {%- endif -%}
+            </span>
+            {%- if bs.title != blank %}<span class="oz-hh__icon-title">{{ bs.title | escape }}</span>{% endif -%}
+            {%- if bs.subtitle != blank %}<span class="oz-hh__icon-sub">{{ bs.subtitle | escape }}</span>{% endif -%}
+          </li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+  </div>
+{%- endcapture -%}
+
+{%- style -%}
+  {{ s.heading_font | font_face: font_display: 'swap' }}
+  {{ s.body_font | font_face: font_display: 'swap' }}
+  {%- assign heading_bold = s.heading_font | font_modify: 'weight', 'bold' -%}
+  {%- if heading_bold %}{{ heading_bold | font_face: font_display: 'swap' }}{% endif -%}
+
+  #oz-hh-{{ sid }} {
+    --hh-heading: {{ s.color_heading }};
+    --hh-highlight: {{ s.color_highlight }};
+    --hh-text: {{ s.color_text }};
+    --hh-btn-bg: {{ s.color_button_bg }};
+    --hh-btn-text: {{ s.color_button_text }};
+    --hh-btn-hover-bg: {{ s.color_button_hover_bg }};
+    --hh-btn-hover-text: {{ s.color_button_hover_text }};
+    --hh-icon-bg: {{ s.color_icon_bg }};
+    --hh-label: {{ s.color_label }};
+    position: relative;
+    overflow: hidden;
+    margin-bottom: {{ s.margin_bottom }}px;
+  }
+  #oz-hh-{{ sid }} .oz-hh__inner {
+    position: relative;
+    width: 100%;
+    aspect-ratio: {{ ratio }};
+    min-height: {{ s.min_height }}px;
+  }
+  #oz-hh-{{ sid }} .oz-hh__media,
+  #oz-hh-{{ sid }} .oz-hh__media img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+  #oz-hh-{{ sid }} .oz-hh__media img {
+    object-fit: cover;
+    object-position: {{ focal }};
+    display: block;
+  }
+  #oz-hh-{{ sid }} .oz-hh__content {
+    position: absolute;
+    z-index: 2;
+    top: 50%;
+    left: {{ s.content_left }}%;
+    transform: translateY(-50%);
+    width: {{ s.content_width }}%;
+    color: var(--hh-text);
+    text-align: left;
+  }
+  #oz-hh-{{ sid }} .oz-hh__heading {
+    font-family: {{ s.heading_font.family }}, {{ s.heading_font.fallback_families }};
+    font-weight: {{ s.heading_font.weight }};
+    font-style: {{ s.heading_font.style }};
+    color: var(--hh-heading);
+    font-size: clamp(28px, {{ h_vw }}vw, {{ s.heading_size }}px);
+    line-height: 1.08;
+    letter-spacing: -0.01em;
+    margin: 0 0 0.35em;
+    text-transform: none;
+  }
+  #oz-hh-{{ sid }} .oz-hh__heading > span { display: block; }
+  #oz-hh-{{ sid }} .oz-hh__highlight { color: var(--hh-highlight); }
+  #oz-hh-{{ sid }} .oz-hh__text {
+    font-family: {{ s.body_font.family }}, {{ s.body_font.fallback_families }};
+    font-weight: {{ s.body_font.weight }};
+    font-size: clamp(14px, {{ p_vw }}vw, {{ s.text_size }}px);
+    line-height: 1.4;
+    color: var(--hh-text);
+    max-width: {{ s.text_width }}em;
+    margin: 0 0 1.1em;
+  }
+  #oz-hh-{{ sid }} .oz-hh__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: {{ s.heading_font.family }}, {{ s.heading_font.fallback_families }};
+    font-weight: 700;
+    font-size: clamp(13px, {{ b_vw }}vw, {{ s.button_size }}px);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    background: var(--hh-btn-bg);
+    color: var(--hh-btn-text);
+    border-radius: 999px;
+    padding: 0.85em 2.6em;
+    min-width: 12em;
+    transition: background-color .2s ease, color .2s ease;
+  }
+  #oz-hh-{{ sid }} .oz-hh__btn:hover,
+  #oz-hh-{{ sid }} .oz-hh__btn:focus-visible {
+    background: var(--hh-btn-hover-bg);
+    color: var(--hh-btn-hover-text);
+  }
+  #oz-hh-{{ sid }} .oz-hh__icons {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: clamp(10px, 2vw, 40px);
+    margin-top: clamp(14px, 1.6vw, 30px);
+    padding: 0;
+    list-style: none;
+  }
+  #oz-hh-{{ sid }} .oz-hh__icon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: clamp(64px, 6.2vw, 120px);
+  }
+  #oz-hh-{{ sid }} .oz-hh__icon-img {
+    width: clamp(40px, {{ i_vw }}vw, {{ s.icon_size }}px);
+    height: clamp(40px, {{ i_vw }}vw, {{ s.icon_size }}px);
+    border-radius: 50%;
+    {%- if s.icon_circle %}
+    background: var(--hh-icon-bg);
+    box-shadow: 0 2px 10px rgba(0,0,0,.08);
+    padding: 16%;
+    {%- endif %}
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.6em;
+    box-sizing: border-box;
+  }
+  #oz-hh-{{ sid }} .oz-hh__icon-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+  }
+  #oz-hh-{{ sid }} .oz-hh__icon-title,
+  #oz-hh-{{ sid }} .oz-hh__icon-sub {
+    font-family: {{ s.body_font.family }}, {{ s.body_font.fallback_families }};
+    font-size: clamp(9px, {{ l_vw }}vw, {{ s.label_size }}px);
+    line-height: 1.25;
+    color: var(--hh-label);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  #oz-hh-{{ sid }} .oz-hh__icon-title { font-weight: 700; }
+
+  /* Tablet: keep the banner tall enough for the text */
+  @media (min-width: 768px) and (max-width: 1024px) {
+    #oz-hh-{{ sid }} .oz-hh__inner { min-height: {{ s.min_height_tablet }}px; }
+    #oz-hh-{{ sid }} .oz-hh__content { width: {{ s.content_width_tablet }}%; }
+  }
+
+  /* Mobile */
+  @media (max-width: 767px) {
+    #oz-hh-{{ sid }} .oz-hh__inner {
+      aspect-ratio: {{ ratio_mb }};
+      min-height: 0;
+    }
+    #oz-hh-{{ sid }} .oz-hh__media img { object-position: {{ focal_mb }}; }
+    #oz-hh-{{ sid }} .oz-hh__content {
+      left: 20px;
+      right: 20px;
+      width: auto;
+      transform: none;
+      text-align: {{ s.mb_text_align }};
+    }
+    #oz-hh-{{ sid }} .oz-hh__heading { font-size: {{ s.heading_size_mb }}px; }
+    #oz-hh-{{ sid }} .oz-hh__text { font-size: {{ s.text_size_mb }}px; max-width: none; }
+    #oz-hh-{{ sid }} .oz-hh__btn { font-size: 14px; }
+    #oz-hh-{{ sid }} .oz-hh__icons {
+      justify-content: {% if s.mb_text_align == 'center' %}center{% else %}space-between{% endif %};
+      gap: 8px;
+    }
+    #oz-hh-{{ sid }} .oz-hh__icon { width: 23%; }
+    #oz-hh-{{ sid }} .oz-hh__icon-img { width: 46px; height: 46px; }
+    #oz-hh-{{ sid }} .oz-hh__icon-title,
+    #oz-hh-{{ sid }} .oz-hh__icon-sub { font-size: 9px; }
+
+    {%- case s.mb_layout -%}
+      {%- when 'top' -%}
+        #oz-hh-{{ sid }} .oz-hh__content { top: {{ s.mb_offset }}px; }
+        {%- if s.mb_fade %}
+        #oz-hh-{{ sid }} .oz-hh__inner::after {
+          content: ""; position: absolute; inset: 0 0 auto 0; height: {{ s.mb_fade_height }}%; z-index: 1;
+          background: linear-gradient(to bottom, rgba(255,255,255,{{ s.mb_fade_opacity | divided_by: 100.0 }}) 0%, rgba(255,255,255,0) 100%);
+        }
+        {%- endif %}
+      {%- when 'bottom' -%}
+        #oz-hh-{{ sid }} .oz-hh__content { top: auto; bottom: {{ s.mb_offset }}px; }
+        {%- if s.mb_fade %}
+        #oz-hh-{{ sid }} .oz-hh__inner::after {
+          content: ""; position: absolute; inset: auto 0 0 0; height: {{ s.mb_fade_height }}%; z-index: 1;
+          background: linear-gradient(to top, rgba(255,255,255,{{ s.mb_fade_opacity | divided_by: 100.0 }}) 0%, rgba(255,255,255,0) 100%);
+        }
+        {%- endif %}
+      {%- else -%}
+        #oz-hh-{{ sid }} .oz-hh__content {
+          position: static;
+          padding: 24px 20px 28px;
+          background: {{ s.mb_below_bg }};
+        }
+    {%- endcase -%}
+  }
+{%- endstyle -%}
+
+<div id="oz-hh-{{ sid }}" class="oz-hh oz-hh--mb-{{ s.mb_layout }}">
+  <div class="oz-hh__inner">
+    <picture class="oz-hh__media">
+      {%- if s.image_mobile != blank -%}
+        <source media="(max-width: 767px)" srcset="{{ img_mb | image_url: width: 750 }} 750w, {{ img_mb | image_url: width: 1100 }} 1100w, {{ img_mb | image_url: width: 1500 }} 1500w" sizes="100vw">
+      {%- endif -%}
+      {%- if img != blank -%}
+        {{ img | image_url: width: 2400 | image_tag: widths: '768, 1100, 1500, 1800, 2400', sizes: '100vw', loading: 'eager', fetchpriority: 'high', alt: img_alt }}
+      {%- else -%}
+        {{ 'lifestyle-1' | placeholder_svg_tag: 'oz-hh__placeholder' }}
+      {%- endif -%}
+    </picture>
+
+    {%- if s.mb_layout != 'below' -%}
+      {{ hh_content }}
+    {%- endif -%}
+  </div>
+  {%- if s.mb_layout == 'below' -%}
+    <div class="oz-hh__below-wrap">
+      {{ hh_content }}
+    </div>
+  {%- endif -%}
+</div>
+
+{%- if s.mb_layout == 'below' -%}
+  {%- style -%}
+    @media (min-width: 768px) {
+      #oz-hh-{{ sid }} .oz-hh__below-wrap { position: absolute; inset: 0; pointer-events: none; }
+      #oz-hh-{{ sid }} .oz-hh__below-wrap .oz-hh__content { pointer-events: auto; }
+    }
+  {%- endstyle -%}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "OZ Home hero",
+  "tag": "section",
+  "class": "oz-home-hero-section",
+  "settings": [
+    { "type": "header", "content": "Images" },
+    { "type": "image_picker", "id": "image", "label": "Desktop image", "info": "Text-free photo. Recommended 1800 x 600 px. Keep the left side clear for the text." },
+    { "type": "image_picker", "id": "image_mobile", "label": "Mobile image", "info": "Recommended 750 x 1100 px. Falls back to the desktop image if empty." },
+    { "type": "text", "id": "focal_desktop", "label": "Desktop image position", "default": "70% 50%", "info": "Used when the image has no focal point set. Lower first number shows more of the left side." },
+    { "type": "text", "id": "focal_mobile", "label": "Mobile image position", "default": "50% 50%" },
+
+    { "type": "header", "content": "Text" },
+    { "type": "text", "id": "heading_line_1", "label": "Heading line 1", "default": "Smart protection" },
+    { "type": "text", "id": "heading_line_2", "label": "Heading line 2 (normal colour part)", "default": "for" },
+    { "type": "text", "id": "heading_highlight", "label": "Heading line 2 (highlighted part)", "default": "life outdoors." },
+    { "type": "textarea", "id": "text", "label": "Paragraph", "default": "Tested UPF 50+ protection, practical comfort and smarter features — at a price that makes proper coverage easier to choose." },
+    { "type": "text", "id": "button_label", "label": "Button text", "default": "SHOP SMART" },
+    { "type": "url", "id": "button_link", "label": "Button link", "default": "/collections/all" },
+
+    { "type": "header", "content": "Fonts" },
+    { "type": "font_picker", "id": "heading_font", "label": "Heading and button font", "default": "montserrat_n7" },
+    { "type": "font_picker", "id": "body_font", "label": "Paragraph and icon label font", "default": "open_sans_n4" },
+
+    { "type": "header", "content": "Colours" },
+    { "type": "color", "id": "color_heading", "label": "Heading", "default": "#0b3a5b" },
+    { "type": "color", "id": "color_highlight", "label": "Heading highlight", "default": "#f5a524" },
+    { "type": "color", "id": "color_text", "label": "Paragraph", "default": "#1f2d3a" },
+    { "type": "color", "id": "color_button_bg", "label": "Button background", "default": "#f5a524" },
+    { "type": "color", "id": "color_button_text", "label": "Button text", "default": "#0b3a5b" },
+    { "type": "color", "id": "color_button_hover_bg", "label": "Button hover background", "default": "#0b3a5b" },
+    { "type": "color", "id": "color_button_hover_text", "label": "Button hover text", "default": "#ffffff" },
+    { "type": "checkbox", "id": "icon_circle", "label": "White circle behind icons", "default": true },
+    { "type": "color", "id": "color_icon_bg", "label": "Icon circle", "default": "#ffffff" },
+    { "type": "color", "id": "color_label", "label": "Icon labels", "default": "#0b3a5b" },
+
+    { "type": "header", "content": "Desktop layout" },
+    { "type": "range", "id": "design_width", "label": "Sizes are designed at this screen width", "min": 1200, "max": 2400, "step": 100, "unit": "px", "default": 1800, "info": "Text scales down smoothly on smaller screens." },
+    { "type": "range", "id": "heading_size", "label": "Heading size", "min": 30, "max": 100, "step": 1, "unit": "px", "default": 72 },
+    { "type": "range", "id": "text_size", "label": "Paragraph size", "min": 12, "max": 30, "step": 1, "unit": "px", "default": 20 },
+    { "type": "range", "id": "text_width", "label": "Paragraph max width", "min": 15, "max": 50, "step": 1, "unit": "em", "default": 27 },
+    { "type": "range", "id": "button_size", "label": "Button text size", "min": 12, "max": 24, "step": 1, "unit": "px", "default": 17 },
+    { "type": "range", "id": "icon_size", "label": "Icon size", "min": 40, "max": 100, "step": 2, "unit": "px", "default": 66 },
+    { "type": "range", "id": "label_size", "label": "Icon label size", "min": 9, "max": 16, "step": 1, "unit": "px", "default": 11 },
+    { "type": "range", "id": "content_left", "label": "Text distance from left", "min": 2, "max": 20, "step": 1, "unit": "%", "default": 6 },
+    { "type": "range", "id": "content_width", "label": "Text area width", "min": 25, "max": 60, "step": 1, "unit": "%", "default": 40 },
+    { "type": "range", "id": "min_height", "label": "Minimum height", "min": 300, "max": 700, "step": 10, "unit": "px", "default": 420 },
+    { "type": "range", "id": "min_height_tablet", "label": "Minimum height (tablet)", "min": 300, "max": 800, "step": 10, "unit": "px", "default": 480 },
+    { "type": "range", "id": "content_width_tablet", "label": "Text area width (tablet)", "min": 35, "max": 80, "step": 1, "unit": "%", "default": 55 },
+
+    { "type": "header", "content": "Mobile layout" },
+    { "type": "select", "id": "mb_layout", "label": "Text position on mobile", "default": "top", "options": [
+      { "value": "top", "label": "On the image, top" },
+      { "value": "bottom", "label": "On the image, bottom" },
+      { "value": "below", "label": "Below the image" }
+    ] },
+    { "type": "select", "id": "mb_text_align", "label": "Text alignment on mobile", "default": "left", "options": [
+      { "value": "left", "label": "Left" },
+      { "value": "center", "label": "Center" }
+    ] },
+    { "type": "range", "id": "mb_offset", "label": "Distance from top/bottom edge", "min": 0, "max": 120, "step": 2, "unit": "px", "default": 28 },
+    { "type": "range", "id": "heading_size_mb", "label": "Heading size", "min": 20, "max": 48, "step": 1, "unit": "px", "default": 32 },
+    { "type": "range", "id": "text_size_mb", "label": "Paragraph size", "min": 12, "max": 20, "step": 1, "unit": "px", "default": 15 },
+    { "type": "checkbox", "id": "mb_fade", "label": "Soft white fade behind text", "default": true, "info": "Keeps text readable over the photo." },
+    { "type": "range", "id": "mb_fade_height", "label": "Fade height", "min": 20, "max": 90, "step": 5, "unit": "%", "default": 60 },
+    { "type": "range", "id": "mb_fade_opacity", "label": "Fade strength", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 75 },
+    { "type": "color", "id": "mb_below_bg", "label": "Background when text is below the image", "default": "#ffffff" },
+
+    { "type": "header", "content": "Spacing" },
+    { "type": "range", "id": "margin_bottom", "label": "Space below section", "min": 0, "max": 80, "step": 2, "unit": "px", "default": 0 }
+  ],
+  "blocks": [
+    {
+      "type": "icon",
+      "name": "Icon",
+      "limit": 6,
+      "settings": [
+        { "type": "image_picker", "id": "icon", "label": "Icon (SVG or PNG)" },
+        { "type": "text", "id": "title", "label": "Bold label", "default": "UPF 50+" },
+        { "type": "text", "id": "subtitle", "label": "Small label", "default": "Tested protection" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "OZ Home hero",
+      "blocks": [
+        { "type": "icon", "settings": { "title": "UPF 50+", "subtitle": "Tested protection" } },
+        { "type": "icon", "settings": { "title": "Lightweight", "subtitle": "All day comfort" } },
+        { "type": "icon", "settings": { "title": "Practical features", "subtitle": "For real life outdoors" } },
+        { "type": "icon", "settings": { "title": "Australian owned", "subtitle": "Designed for our conditions" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
