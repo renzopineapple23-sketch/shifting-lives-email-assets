@@ -170,11 +170,13 @@
     margin-bottom: 0.6em;
     box-sizing: border-box;
   }
+  #oz-hh-{{ sid }} .oz-hh__icon-img { overflow: hidden; }
   #oz-hh-{{ sid }} .oz-hh__icon-img img {
     width: 100%;
     height: 100%;
     object-fit: contain;
     display: block;
+    transform: scale({{ s.icon_zoom | divided_by: 100.0 }});
   }
   #oz-hh-{{ sid }} .oz-hh__icon-title,
   #oz-hh-{{ sid }} .oz-hh__icon-sub {
@@ -323,6 +325,7 @@
     { "type": "range", "id": "button_size", "label": "Button text size", "min": 12, "max": 24, "step": 1, "unit": "px", "default": 17 },
     { "type": "range", "id": "icon_size", "label": "Icon size", "min": 40, "max": 100, "step": 2, "unit": "px", "default": 66 },
     { "type": "range", "id": "label_size", "label": "Icon label size", "min": 9, "max": 16, "step": 1, "unit": "px", "default": 11 },
+    { "type": "range", "id": "icon_zoom", "label": "Icon zoom", "min": 100, "max": 500, "step": 10, "unit": "%", "default": 300, "info": "Makes the icon bigger inside its circle. Use this if the icon file has empty space around it." },
     { "type": "range", "id": "content_left", "label": "Text distance from left", "min": 2, "max": 20, "step": 1, "unit": "%", "default": 6 },
     { "type": "range", "id": "content_width", "label": "Text area width", "min": 25, "max": 60, "step": 1, "unit": "%", "default": 40 },
     { "type": "range", "id": "min_height", "label": "Minimum height", "min": 300, "max": 700, "step": 10, "unit": "px", "default": 420 },
