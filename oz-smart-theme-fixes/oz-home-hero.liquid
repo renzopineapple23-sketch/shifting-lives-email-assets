@@ -90,9 +90,9 @@
     position: absolute;
     z-index: 2;
     top: 50%;
-    left: {{ s.content_left }}%;
+    left: max({{ s.content_left }}%, calc((100% - var(--wrapper-mw, 1400px)) / 2 + 15px));
     transform: translateY(-50%);
-    width: {{ s.content_width }}%;
+    width: min({{ s.content_width }}%, 780px);
     color: var(--hh-text);
     text-align: left;
   }
